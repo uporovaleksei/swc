@@ -1,30 +1,29 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import VechicleView from '../views/VechicleView.vue'
-import ProfileView from '../views/ProfileView.vue'
-import SettingsView from '../views/SettingsView.vue'
+import VechiclePage from '../views/VehiclesPage.vue'
+import ProfilePage from '../views/ProfilePage.vue'
+import SettingsPage from '../views/SettingsPage.vue'
 
 const routes = [
   {
     path: '/',
     name: 'vechicle',
-    component: VechicleView
+    component: VechiclePage,
   },
   {
     path: '/settings',
     name: 'settings',
-    component: SettingsView
+    component: SettingsPage,
   },
   {
     path: '/profile',
     name: 'profile',
-    component: ProfileView
+    component: ProfilePage,
   },
-
 ]
 
 const router = createRouter({
   history: createWebHistory(process.env.BASE_URL),
-  routes
+  routes,
 })
 
 export default router
