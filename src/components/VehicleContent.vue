@@ -1,11 +1,12 @@
 <script setup>
 import CarCard from './CarCard.vue'
 import api from '@/utils/api'
-import { ref, onMounted, watch } from 'vue'
+import { ref, watch } from 'vue'
 
 const cars = ref([])
 const currentPage = ref(1)
 const totalPages = ref(0)
+const totalCars = ref(null)
 const perPageOptions = [3, 6, 9, 18]
 const perPage = ref(9)
 const search = ref('')
@@ -19,9 +20,10 @@ const fetchCars = async () => {
     const response = await api.get(url)
     cars.value = response.data.data
     totalPages.value = response.data.meta.last_page
+    totalCars.value = response.data.meta.total
     document.dispatchEvent(
       new CustomEvent('updateTotalCars', {
-        detail: { totalCars: totalPages.value * perPage.value },
+        detail: { totalCars: totalCars.value },
       }),
     )
   } catch (error) {
@@ -41,9 +43,7 @@ const changePage = newPage => {
   }
 }
 
-onMounted(() => {
-  fetchCars()
-})
+fetchCars()
 
 watch([search, perPage], () => {
   currentPage.value = 1
@@ -93,7 +93,7 @@ watch([search, perPage], () => {
     <div class="footer">
       <div class="shows">
         Showing {{ cars.length * currentPage }} out of
-        {{ totalPages * perPage }}
+        {{ totalCars }}
       </div>
       <div class="pagination">
         <button @click="changePage(currentPage - 1)" :disabled="currentPage === 1">
