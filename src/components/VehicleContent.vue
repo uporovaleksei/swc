@@ -11,19 +11,21 @@ const perPage = ref(9)
 const search = ref('')
 const fetchCars = async () => {
   try {
-    const response = await api.get(
-      `cars-test?search=${search.value}&per_page=${perPage.value}&page=${currentPage.value}`,
-    )
+    let url = `cars-test?per_page=${perPage.value}&page=${currentPage.value}`
+    const text = search.value?.trim()
+    if (text) {
+      url += '&search=' + encodeURIComponent(text)
+    }
+    const response = await api.get(url)
     cars.value = response.data.data
     totalPages.value = response.data.meta.last_page
-
     document.dispatchEvent(
-      new CustomEvent('update-total-cars', {
+      new CustomEvent('updateTotalCars', {
         detail: { totalCars: totalPages.value * perPage.value },
       }),
     )
   } catch (error) {
-    console.error('Error fetching data:', error)
+    console.error(error)
   }
 }
 
@@ -226,7 +228,7 @@ watch([search, perPage], () => {
     display: flex;
     flex-wrap: wrap;
     align-items: center;
-    gap: 30px;
+    gap: 50px;
     .car__item {
       transition: 0.3s ease all;
 
@@ -316,6 +318,23 @@ watch([search, perPage], () => {
         }
         &:active {
           scale: 0.9;
+        }
+      }
+    }
+  }
+}
+@media (max-width: 1441px) {
+  .container {
+    .car__items {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 30px;
+      .car__item {
+        transition: 0.3s ease all;
+
+        &:hover {
+          scale: 1.1;
         }
       }
     }

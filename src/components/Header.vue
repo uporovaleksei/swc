@@ -11,11 +11,11 @@ const handleTotalCarsUpdate = event => {
 }
 
 onMounted(() => {
-  document.addEventListener('update-total-cars', handleTotalCarsUpdate)
+  document.addEventListener('updateTotalCars', handleTotalCarsUpdate)
 })
 
 onBeforeUnmount(() => {
-  document.removeEventListener('update-total-cars', handleTotalCarsUpdate)
+  document.removeEventListener('updateTotalCars', handleTotalCarsUpdate)
 })
 </script>
 
